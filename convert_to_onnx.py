@@ -22,9 +22,9 @@ parser.add_argument('--datapath', default='/media/jiaren/ImageNet/data_scene_flo
                     help='select model')
 parser.add_argument('--loadmodel', default='./trained/pretrained_model_KITTI2015.tar',
                     help='loading model')
-parser.add_argument('--leftimg', default='./VO04_L.png',
+parser.add_argument('--leftimg', default='./image/left.png',
                     help='load model')
-parser.add_argument('--rightimg', default='./VO04_R.png',
+parser.add_argument('--rightimg', default='./image/right.png',
                     help='load model')
 parser.add_argument('--model', default='stackhourglass',
                     help='select model')
@@ -81,7 +81,7 @@ def test(imgL, imgR):
                       "PSMNET.onnx",
                       # where to save the model (can be a file or file-like object)
                       export_params=True,  # store the trained parameter weights inside the model file
-                      opset_version=12,  # the ONNX version to export the model to
+                      verbose=False, opset_version=11,  # the ONNX version to export the model to
                       do_constant_folding=True,  # whether to execute constant folding for optimization
                       input_names=['left', 'right'],  # the model's input names
                       output_names=['output'])

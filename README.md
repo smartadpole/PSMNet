@@ -50,6 +50,20 @@ And rename the folder as: "driving_frames_cleanpass", "driving_disparity", "monk
 1. Warning of upsample function in PyTorch 0.4.1+: add "align_corners=True" to upsample functions.
 2. Output disparity may be better with multipling by 1.17. Reported from issues [#135](https://github.com/JiaRenChang/PSMNet/issues/135) and [#113](https://github.com/JiaRenChang/PSMNet/issues/113).
 
+### test
+convert model to onnx
+```commandline
+ python convert_to_onnx.py --loadmodel $your_path/pretrained_model_KITTI2015.tar
+```
+test onnx model
+```shell
+python onnx_test.py # install onnxruntime
+```
+slim
+```commandline
+ python -m onnxsim --skip-fuse-bn PSMNET.onnx PSMNET_sim.onnx
+```
+
 ### Train
 As an example, use the following command to train a PSMNet on Scene Flow
 

@@ -12,10 +12,12 @@ net = ONNXModel("PSMNET.onnx")
 # rimg = np.expand_dims(np.resize(rimg,(3,400,640)),0)
 # # rimg = np.expand_dims(rimg,0)
 
-limg_ori = Image.open("dataset/0.L.png").convert('RGB')
-# limg_ori = limg_ori.resize(240,320,3)
-rimg_ori = Image.open("dataset/0.R.png").convert('RGB')
-# rimg_ori = rimg_ori.resize(240,320,3)
+input_height = 400
+input_width = 640
+limg_ori = Image.open("image/left.png").convert('RGB')
+limg_ori = limg_ori.resize((input_width, input_height), 3)
+rimg_ori = Image.open("image/right.png").convert('RGB')
+rimg_ori = rimg_ori.resize((input_width, input_height), 3)
 
 # why crop
 # w, h = limg_ori.size
@@ -31,15 +33,16 @@ rimg_tensor = transforms.Compose([
 limg_tensor = limg_tensor.unsqueeze(0).cuda()
 rimg_tensor = rimg_tensor.unsqueeze(0).cuda()
 
-limg=limg_tensor.cpu().numpy()
-rimg=rimg_tensor.cpu().numpy()
+limg = limg_tensor.cpu().numpy()
+rimg = rimg_tensor.cpu().numpy()
 
-output  = net.forward(limg,rimg)
+output = net.forward(limg, rimg)
 dis_array = output[0][0][0]
 dis_array = (dis_array - dis_array.min()) / (dis_array.max() - dis_array.min()) * 255.0
 dis_array = dis_array.astype("uint8")
 
 import cv2
+
 showImg = cv2.resize(dis_array, (dis_array.shape[-1], dis_array.shape[0]))
 showImg = cv2.applyColorMap(cv2.convertScaleAbs(showImg, 1), cv2.COLORMAP_PARULA)
 cv2.imwrite("onnx_result.jpg", showImg)
